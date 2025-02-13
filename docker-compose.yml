@@ -1,0 +1,91 @@
+x-logging: &default-logging
+ driver: loki
+ options:
+   loki-url: "https://${GRAFANA_USER_ID}:${GRAFANA_API_KEY}@logs-prod-012.grafana.net/loki/api/v1/push"
+   loki-external-labels: "app=telegram-bot,env=production"
+services:
+  bot_prod:
+    image: z1k01ff/ub1_helper:latest
+    container_name: "${BOT_CONTAINER_NAME}"
+    working_dir: "/bot"
+    env_file:
+      - .env
+    depends_on:
+      - pg_database
+      - redis_cache
+    restart: always
+    command: bash -c "python main.py"
+    stop_signal: SIGINT
+    stop_grace_period: 30s
+    network_mode: "host"
+    volumes:
+      - bot_data:/app/volume
+    logging: *default-logging
+
+  redis_cache:
+    image: redis:6.2-alpine
+    container_name: redis_cache
+    restart: always
+    command: redis-server --port $REDIS_PORT --save 20 1 --loglevel warning --requirepass $REDIS_PASSWORD
+    volumes:
+      - cache:/data
+    env_file:
+      - .env
+    network_mode: "host"
+    logging: *default-logging
+
+  pg_database:
+    image: postgres:13-alpine
+    container_name: pg_database
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres-entrypoint.sh:/docker-entrypoint-initdb.d/postgres-entrypoint.sh
+    command: >
+      postgres
+      -c max_connections=200
+      -c shared_buffers=512MB
+      -c effective_cache_size=1536MB
+      -c maintenance_work_mem=128MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c work_mem=3495kB
+      -c min_wal_size=1GB
+      -c max_wal_size=4GB
+      -c max_worker_processes=5
+      -c max_parallel_workers_per_gather=1
+      -c max_parallel_workers=5
+      -c max_parallel_maintenance_workers=1
+      -c timezone=Europe/Kiev
+      -c listen_addresses='*'
+      -c hba_file=/var/lib/postgresql/data/pg_hba.conf
+    env_file:
+      - .env
+    environment:
+      - TZ=Europe/Kiev
+    network_mode: "host"
+    logging: *default-logging
+
+  backup:
+    image: postgres:13-alpine
+    container_name: postgres_backup
+    network_mode: "host"
+    volumes:
+      - ./backup/backup.sh:/backup.sh
+    environment:
+      - POSTGRES_HOST=localhost
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TG_BOT_TOKEN=${BOT_TOKEN}
+      - TG_CHAT_ID=${BACKUP_CHAT_ID}
+    entrypoint: ["/bin/sh", "/backup.sh"]
+    logging: *default-logging
+
+volumes:
+ cache:
+ pgdata:
+ bot_data:
