@@ -11,21 +11,6 @@ from loguru import logger
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from aiogram.fsm.storage.memory import MemoryStorage
 
-import app.handlers.user_task
-from app.db_files.db_redis import redis
-from app.dialogs.all_dialogs.menu_dialogs import main_menu_dialog
-from app.dialogs.all_dialogs.new_user_dialogs import new_user_dialog
-from app.dialogs.handlers import start_menu as start_menu_handler
-from app.handlers import commands, photo, admin_task
-from app.middleware.user import UserDatabaseMiddleware
-from app.utils.bot import bot
-from app.utils.scheduler import scheduler, scheduler_main
-from app.utils.sync_to_async import cleanup  # Додайте цей імпорт
-from app.dialogs.callbacks.pl_callbacks import check_pl_operations, edit_pl_operations
-
-# Ігнорування warning dataframe_image
-warnings.filterwarnings("ignore", category=FutureWarning)
-
 
 storage = RedisStorage(redis=redis, key_builder=DefaultKeyBuilder(with_destiny=True))
 dp = Dispatcher(storage=storage)

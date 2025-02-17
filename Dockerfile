@@ -18,11 +18,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Oracle Instant Client
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/1923000/instantclient-basiclite-linux.x64-19.23.0.0.0dbru.zip \
-    && unzip instantclient-basiclite-linux.x64-19.23.0.0.0dbru.zip -d /oracle \
-    && rm -f instantclient-basiclite-linux.x64-19.23.0.0.0dbru.zip
-
 # Install Google Chrome and ChromeDriver
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
