@@ -1,72 +1,72 @@
-
+# Визначення директорій проекту
 project_dir := .
 package_dir := app
 
 .PHONY: help
-help: ## Display this help.
+help: ## Відображення цієї довідки.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-##@ Formatting & Linting
+##@ Форматування та перевірка коду
 
 .PHONY: reformat
-reformat: ## Reformat code
+reformat: ## Переформатувати код
 	@uv run ruff format $(project_dir)
 	@uv run ruff check $(project_dir) --fix
 
 .PHONY: lint
-lint: reformat ## Lint code
+lint: reformat ## Перевірити код
 	@uv run mypy $(project_dir)
 
-##@ Database
+##@ База даних
 
 .PHONY: migration
-migration: ## Make database migration
+migration: ## Створити міграцію бази даних
 	@uv run alembic revision \
 	  --autogenerate \
 	  --rev-id $(shell python migrations/_get_revision_id.py) \
 	  --message $(message)
 
 .PHONY: migrate
-migrate: ## Apply database migrations
+migrate: ## Застосувати міграції бази даних
 	@uv run alembic upgrade head
 
 .PHONY: app-run-db
-app-run-db: ## Run bot database containers
+app-run-db: ## Запустити контейнери бази даних
 	@docker compose up -d --remove-orphans postgres redis
 
-##@ App commands
+##@ Команди додатку
 
 .PHONY: run
-run: ## Run bot
+run: ## Запустити бота
 	@uv run python -O -m $(package_dir)
 
 .PHONY: app-build
-app-build: ## Build bot image
+app-build: ## Зібрати образ бота
 	@docker compose build
 
 .PHONY: app-run
-app-run: ## Run bot in docker container
+app-run: ## Запустити бота в контейнері Docker
 	@docker compose stop
 	@docker compose up -d --remove-orphans
 
 .PHONY: app-stop
-app-stop: ## Stop docker containers
+app-stop: ## Зупинити контейнери Docker
 	@docker compose stop
 
 .PHONY: app-down
-app-down: ## Down docker containers
+app-down: ## Зупинити контейнери Docker (down)
 	@docker compose down
 
 .PHONY: app-destroy
-app-destroy: ## Destroy docker containers
+app-destroy: ## Знищити контейнери Docker
 	@docker compose down -v --remove-orphans
 
 .PHONY: app-logs
-app-logs: ## Show bot logs
+app-logs: ## Показати логи бота
 	@docker compose logs -f bot
 
-##@ Other
+##@ Інше
 
 .PHONY: name
-name: ## Get top-level package name
+name: ## Отримати назву пакету верхнього рівня
 	@echo $(package_dir)

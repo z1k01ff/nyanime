@@ -2,9 +2,31 @@ from .base import EnvSettings
 
 
 class SQLAlchemyConfig(EnvSettings, env_prefix="ALCHEMY_"):
-    echo: bool = False
-    echo_pool: bool = False
-    pool_size: int = 25
-    max_overflow: int = 25
-    pool_timeout: int = 10
-    pool_recycle: int = 3600
+    """
+    Конфігурація для ORM SQLAlchemy.
+    
+    Цей клас містить налаштування для SQLAlchemy, які визначають поведінку
+    пулу з'єднань, логування та інші параметри роботи з базою даних.
+    Завантажує значення з змінних середовища з префіксом ALCHEMY_.
+    
+    Attributes:
+        echo: Прапорець для виведення SQL-запитів у логи.
+              Завантажується з ALCHEMY_ECHO. За замовчуванням: False.
+        echo_pool: Прапорець для виведення подій пулу з'єднань у логи.
+                  Завантажується з ALCHEMY_ECHO_POOL. За замовчуванням: False.
+        pool_size: Розмір пулу з'єднань (максимальна кількість постійних з'єднань).
+                  Завантажується з ALCHEMY_POOL_SIZE. За замовчуванням: 25.
+        max_overflow: Максимальна кількість додаткових з'єднань понад pool_size.
+                     Завантажується з ALCHEMY_MAX_OVERFLOW. За замовчуванням: 25.
+        pool_timeout: Час очікування доступного з'єднання в секундах.
+                     Завантажується з ALCHEMY_POOL_TIMEOUT. За замовчуванням: 10.
+        pool_recycle: Час у секундах, після якого з'єднання буде перестворено.
+                     Завантажується з ALCHEMY_POOL_RECYCLE. За замовчуванням: 3600 (1 година).
+    """
+    
+    echo: bool = False  # Виведення SQL-запитів у логи
+    echo_pool: bool = False  # Виведення подій пулу з'єднань у логи
+    pool_size: int = 25  # Розмір пулу з'єднань
+    max_overflow: int = 25  # Максимальна кількість додаткових з'єднань
+    pool_timeout: int = 10  # Час очікування доступного з'єднання (секунди)
+    pool_recycle: int = 3600  # Час до перестворення з'єднання (секунди, 1 година)

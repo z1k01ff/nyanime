@@ -4,6 +4,12 @@ from enum import StrEnum, auto
 
 
 class Locale(StrEnum):
+    """
+    Перелік підтримуваних мов локалізації.
+    
+    Цей клас визначає всі мови, які підтримуються ботом для локалізації.
+    Кожен елемент представляє код мови відповідно до стандарту ISO 639-1.
+    """
     EN = auto()  # English
     UK = auto()  # Ukrainian
     AR = auto()  # Arabic

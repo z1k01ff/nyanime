@@ -1,56 +1,56 @@
 # aiogram_bot_template
-[![Author](https://img.shields.io/badge/Author-@wakaree-blue)](https://wakaree.dev)
-[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![Автор](https://img.shields.io/badge/Author-@wakaree-blue)](https://wakaree.dev)
+[![Ліцензія](https://img.shields.io/badge/License-MIT-blue)](#license)
 
-## ⚙️ System dependencies
+## ⚙️ Системні залежності
 - Python 3.11+
 - Docker
 - docker-compose
 - make
 - uv
 
-## 🐳 Quick Start with Docker compose
-- Rename `.env.dist` to `.env` and configure it
-- Rename `docker-compose.example.yml` to `docker-compose.yml`
-- Run `make app-build` command then `make app-run` to start the bot
+## 🐳 Швидкий старт з Docker compose
+- Перейменуйте `.env.dist` на `.env` та налаштуйте його
+- Перейменуйте `docker-compose.example.yml` на `docker-compose.yml`
+- Виконайте команду `make app-build`, а потім `make app-run`, щоб запустити бота
 
-Use `make` to see all available commands
+Використовуйте `make`, щоб побачити всі доступні команди
 
-## 🔧 Development
+## 🔧 Розробка
 
-### Setup environment
+### Налаштування середовища
 ```bash
 uv sync
 ```
-### Update database tables structure
-**Make migration script:**
+### Оновлення структури таблиць бази даних
+**Створення скрипту міграції:**
 ```bash
-make migration message=MESSAGE_WHAT_THE_MIGRATION_DOES
+make migration message=ПОВІДОМЛЕННЯ_ЩО_РОБИТЬ_МІГРАЦІЯ
 ```
-**Run migrations:**
+**Запуск міграцій:**
 ```bash
 make migrate
 ```
 
-## 🚀 Used technologies:
-- [uv](https://docs.astral.sh/uv/) (an extremely fast Python package and project manager)
-- [Aiogram 3.x](https://github.com/aiogram/aiogram) (Telegram bot framework)
-- [PostgreSQL](https://www.postgresql.org/) (persistent relational database)
-- [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
-- [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
-- [Redis](https://redis.io/docs/) (in-memory database for FSM and caching)
-- [Project Fluent](https://projectfluent.org/) (modern localization system)
+## 🚀 Використані технології:
+- [uv](https://docs.astral.sh/uv/) (надзвичайно швидкий менеджер пакетів та проектів Python)
+- [Aiogram 3.x](https://github.com/aiogram/aiogram) (фреймворк для Telegram ботів)
+- [PostgreSQL](https://www.postgresql.org/) (реляційна база даних)
+- [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (робота з базою даних з Python)
+- [Alembic](https://alembic.sqlalchemy.org/en/latest/) (легкий інструмент для міграції баз даних)
+- [Redis](https://redis.io/docs/) (база даних в пам'яті для FSM та кешування)
+- [Project Fluent](https://projectfluent.org/) (сучасна система локалізації)
 
-## 🤝 Contributions
+## 🤝 Внески
 
-### 🐛 Bug Reports / ✨ Feature Requests
+### 🐛 Звіти про помилки / ✨ Запити на нові функції
 
-If you want to report a bug or request a new feature, feel free to open a [new issue](https://github.com/wakaree/aiogram_bot_template/issues/new).
+Якщо ви хочете повідомити про помилку або запросити нову функцію, не соромтеся відкрити [нове питання](https://github.com/wakaree/aiogram_bot_template/issues/new).
 
 ### Pull Requests
 
-If you want to help us improve the bot, you can create a new [Pull Request](https://github.com/wakaree/aiogram_bot_template/pulls).
+Якщо ви хочете допомогти нам покращити бота, ви можете створити новий [Pull Request](https://github.com/wakaree/aiogram_bot_template/pulls).
 
-## 📝 License
+## 📝 Ліцензія
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Цей проект ліцензований за ліцензією MIT - дивіться файл [LICENSE](LICENSE) для деталей.

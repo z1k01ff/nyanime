@@ -1,12 +1,35 @@
+# Файл конфігурації systemd для запуску Telegram бота як системного сервісу
+# 
+# Цей файл визначає налаштування для запуску бота як системного сервісу,
+# що забезпечує автоматичний запуск при завантаженні системи та перезапуск
+# у разі збоїв.
+# 
+# Для використання:
+# 1. Скопіюйте цей файл у /etc/systemd/system/telegram-bot.service
+# 2. Змініть налаштування відповідно до вашого середовища
+# 3. Виконайте: sudo systemctl daemon-reload
+# 4. Запустіть сервіс: sudo systemctl start telegram-bot
+# 5. Увімкніть автозапуск: sudo systemctl enable telegram-bot
+
 [Unit]
+# Опис сервісу для відображення в системних логах та командах systemctl
 Description=My Telegram Bot
+# Додаткові залежності можна додати тут (наприклад, After=network.target postgresql.service)
 
 [Service]
+# Користувач, від імені якого буде запущено сервіс
 User=your_username_here
+# Робоча директорія, в якій буде запущено сервіс
 WorkingDirectory=/full_path/to/your/working/directory
+# Команда для запуску бота
 ExecStart=make run
+# Автоматичний перезапуск сервісу у разі збою
 Restart=always
+# Затримка перед перезапуском (у секундах)
 RestartSec=15
+# Додаткові налаштування можна додати тут (наприклад, Environment=DEBUG=0)
 
 [Install]
+# Цільова одиниця systemd, яка визначає, коли сервіс буде запущено
+# multi-user.target відповідає звичайному багатокористувацькому режиму
 WantedBy=multi-user.target

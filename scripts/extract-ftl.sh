@@ -1,25 +1,33 @@
-# Load all locales from .env
+#!/bin/bash
+# 
+# Скрипт для вилучення рядків локалізації з коду проекту.
+# 
+# Цей скрипт автоматично вилучає всі рядки локалізації з коду проекту
+# та генерує файли .ftl для кожної підтримуваної мови.
+# Використовує утиліту ftl-extract для аналізу коду.
+
+# Завантаження всіх локалей з файлу .env
 CURRENT_LOCALES=$(grep '^TELEGRAM_LOCALES=' ./.env | cut -d '=' -f 2)
 
-# Initialize empty variable for processed locales
+# Ініціалізація порожньої змінної для оброблених локалей
 PROCESSED_LOCALES=""
 
-# Set separator for splitting locales by comma
+# Встановлення роздільника для розділення локалей комою
 IFS=','
 
-# Loop through each locale in CURRENT_LOCALES
+# Цикл по кожній локалі в CURRENT_LOCALES
 for lang in $CURRENT_LOCALES; do
-    # Append each locale to PROCESSED_LOCALES with a space separator
+    # Додавання кожної локалі до PROCESSED_LOCALES з роздільником пробілу
     PROCESSED_LOCALES="$PROCESSED_LOCALES -l $lang"
 done
 
-# Reset IFS to default
+# Скидання IFS до значення за замовчуванням
 unset IFS
 
-# Delete first character (space)
+# Видалення першого символу (пробілу)
 PROCESSED_LOCALES="${PROCESSED_LOCALES#?}"
 
-# Run the script with processed locales as arguments
+# Запуск скрипту з обробленими локалями як аргументами
 # shellcheck disable=SC2086
 uv run ftl-extract \
     app assets/messages \
